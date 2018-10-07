@@ -1,0 +1,20 @@
+---
+name: "Simple"
+lines:
+ - clear:
+ - policy: "input"
+ - policy:
+     chain: "output"
+     policy: "accept"
+ - rule: "input"
+   target: "accept"
+   interface-in: "lo"
+ - rule: "output"
+   target: "accept"
+   interface-out: "lo"
+ - rule: "input"
+   target: "accept"
+   state: "ESTABLISHED,RELATED"
+ - rule: "input"
+   target: "drop"
+...
