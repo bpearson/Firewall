@@ -139,6 +139,19 @@ class AbstractObject
     }//end setName()
 
 
+    /**
+     * Navigation.
+     */
+
+
+    /**
+     * Find a node underneath the current node (inclusive).
+     *
+     * @param mixed   $type  The type to find.
+     * @param integer $depth The depth to find (-1 = unlimited).
+     *
+     * @return array
+     */
     public function find($type, $depth=-1)
     {
         if (is_array($type) === false) {
@@ -167,6 +180,13 @@ class AbstractObject
     }//end find()
 
 
+    /**
+     * Find a child underneath the current node.
+     *
+     * @param mixed $type The type to find.
+     *
+     * @return array
+     */
     public function findChild($type)
     {
         if (is_array($type) === false) {
@@ -187,6 +207,14 @@ class AbstractObject
     }//end findChild()
 
 
+    /**
+     * Find a parent node.
+     *
+     * @param mixed   $type  The type to find.
+     * @param integer $depth The depth to find (-1 = unlimited).
+     *
+     * @return array
+     */
     public function findParent($type, $depth=-1)
     {
         if (is_array($type) === false) {
@@ -215,6 +243,14 @@ class AbstractObject
     }//end findParent()
 
 
+    /**
+     * Find a parent sibling node.
+     *
+     * @param mixed   $type  The type to find.
+     * @param integer $depth The depth to find (-1 = unlimited).
+     *
+     * @return array
+     */
     public function findParentSibling($type, $depth=-1)
     {
         if (is_array($type) === false) {
@@ -253,6 +289,14 @@ class AbstractObject
     }//end findParentSibling()
 
 
+    /**
+     * Find a sibling node.
+     *
+     * @param mixed   $type  The type to find.
+     * @param integer $depth The depth to find (-1 = unlimited).
+     *
+     * @return array
+     */
     public function findSibling($type, $depth=-1)
     {
         if (is_array($type) === false) {
@@ -287,6 +331,11 @@ class AbstractObject
     }//end findSibling()
 
 
+    /**
+     * Find the top level node.
+     *
+     * @return object
+     */
     public function findTopLevel()
     {
         $top   = null;
