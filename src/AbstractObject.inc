@@ -82,7 +82,6 @@ class AbstractObject
     {
         $options = '';
         if ($this->parentNode !== null && $this->parentNode->type === 'FIREWALL_LINE') {
-            // TODO: Does it need to go higher than 1?
             foreach ($this->parentNode->children as $child) {
                 if ($child->option === true) {
                     if ($child->type === 'FIREWALL_PROTOCOL') {
@@ -111,7 +110,6 @@ class AbstractObject
     {
         $hasOption = false;
         if ($this->parentNode !== null && $this->parentNode->type === 'FIREWALL_LINE') {
-            // TODO: Does it need to go higher than 1?
             foreach ($this->parentNode->children as $child) {
                 if ($child->type === $option) {
                     $hasOption = true;
@@ -137,6 +135,22 @@ class AbstractObject
         $this->name = $name;
 
     }//end setName()
+
+
+    /**
+     * Validate a node.
+     *
+     * @return void
+     * @throws \Exception When validation fails.
+     */
+    public function validate()
+    {
+        if ($this->option === true && ($this->parentNode->type ?? null) !== 'FIREWALL_LINE') {
+            // Options only allowed under line objects.
+            throw new \Exception('Options can only exist under lines');
+        }//end if
+
+    }//end validate()
 
 
     /**

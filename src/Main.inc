@@ -21,6 +21,7 @@ class Main
     public static function build()
     {
         $firewall = Main::parse(self::$_file);
+        Main::validate($firewall);
 
         echo (string) $firewall."\n";
 
@@ -85,6 +86,24 @@ class Main
         $class::parse($firewall, $value);
 
     }//end process()
+
+
+    /**
+     * Validate the firewall object.
+     *
+     * @param object $firewall The firewall object.
+     *
+     * @return void
+     * @throws Exception When validation fails.
+     */
+    public static function validate($firewall)
+    {
+        $firewall->validate();
+        foreach ($firewall->children as $child) {
+            Main::validate($child);
+        }//end foreach
+
+    }//end validate()
 
 
 }//end class
