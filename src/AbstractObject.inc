@@ -145,6 +145,10 @@ class AbstractObject
      */
     public function validate()
     {
+        if ($this->parentNode === null && $this->type !== 'FIREWALL_STATEMENT') {
+            throw new \Exception('Invalid firewall tree');
+        }//end if
+
         if ($this->option === true && ($this->parentNode->type ?? null) !== 'FIREWALL_LINE') {
             // Options only allowed under line objects.
             throw new \Exception('Options can only exist under lines');
