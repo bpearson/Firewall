@@ -3,6 +3,7 @@ namespace Firewall\Objects;
 
 
 use \Firewall\AbstractObject;
+use \Firewall\Main;
 
 
 class Clear extends AbstractObject
@@ -18,9 +19,12 @@ class Clear extends AbstractObject
 
     public function __toString()
     {
-        $content  = '/sbin/iptables -F'.$this->getOptions()."\n";
-        $content .= '/sbin/iptables -X'.$this->getOptions()."\n";
-        $content .= '/sbin/iptables -Z'.$this->getOptions()."\n";
+        $content = '';
+        $engine  = Main::getEngine();
+        if ($engine !== null) {
+            $options = $this->getOptions();
+            $content = $engine->clear($options);
+        }//end if
 
         return $content;
 

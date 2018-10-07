@@ -3,6 +3,7 @@ namespace Firewall\Objects;
 
 
 use \Firewall\AbstractObject;
+use \Firewall\Main;
 
 
 class Rule extends AbstractObject
@@ -41,7 +42,12 @@ class Rule extends AbstractObject
 
     public function __toString()
     {
-        $content = '/sbin/iptables -A '.strtoupper($this->value).$this->getOptions()."\n";
+        $content = '';
+        $engine  = Main::getEngine();
+        if ($engine !== null) {
+            $options = $this->getOptions();
+            $content = $engine->rule($this->value, $options);
+        }//end if
 
         return $content;
 

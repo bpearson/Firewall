@@ -14,6 +14,11 @@ foreach (glob($rootDir.'/src/*.inc') as $file) {
     include_once $file;
 }//end foreach
 
+// Engines.
+foreach (glob($rootDir.'/src/Engines/*.inc') as $file) {
+    include_once $file;
+}//end foreach
+
 // Objects.
 foreach (glob($rootDir.'/src/Objects/*.inc') as $file) {
     include_once $file;

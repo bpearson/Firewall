@@ -3,6 +3,7 @@ namespace Firewall\Objects;
 
 
 use \Firewall\AbstractObject;
+use \Firewall\Main;
 
 
 class Policy extends AbstractObject
@@ -33,9 +34,14 @@ class Policy extends AbstractObject
     public function __toString()
     {
         $content = '';
-        if (empty($this->value) === false) {
-            $options  = $this->getOptions();
-            $content  = '/sbin/iptables -P '.strtoupper($this->value).' '.strtoupper($this->policy).$options."\n";
+        $engine  = Main::getEngine();
+        if ($engine !== null) {
+            $options = $this->getOptions();
+            $value   = [
+                'value'  => $this->value,
+                'policy' => $this->policy,
+            ];
+            $content = $engine->policy($value, $options);
         }//end if
 
         return $content;

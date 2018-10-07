@@ -76,19 +76,19 @@ class AbstractObject
     /**
      * Get the options for a line.
      *
-     * @return string
+     * @return array
      */
     public function getOptions()
     {
-        $options = '';
+        $options = [];
         if ($this->parentNode !== null && $this->parentNode->type === 'FIREWALL_LINE') {
             foreach ($this->parentNode->children as $child) {
                 if ($child->option === true) {
                     if ($child->type === 'FIREWALL_PROTOCOL') {
                         // Hardcode protocol to be the first.
-                        $options = (string) $child.$options;
+                        array_unshift($options, (string) $child);
                     } else {
-                        $options .= (string) $child;
+                        $options[] = (string) $child;
                     }//end if
                 }//end if
             }//end foreach

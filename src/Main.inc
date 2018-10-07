@@ -6,6 +6,20 @@ class Main
 {
 
     /**
+     * The default engine.
+     *
+     * @var string
+     */
+    private static $_engine = null;
+
+    /**
+     * Engines.
+     *
+     * @var array
+     */
+    private static $_engines = [];
+
+    /**
      * The file.
      *
      * @var string
@@ -29,6 +43,26 @@ class Main
 
 
     /**
+     * Return a firewall engine.
+     *
+     * @param mixed $engine Override the default engine.
+     *
+     * @return object|null
+     */
+    public static function getEngine($engine=null)
+    {
+        if ($engine === null) {
+            $engine = self::$_engine;
+        }//end if
+
+        $fwEngine = (self::$_engines[$engine] ?? null);
+
+        return $fwEngine;
+
+    }//end getEngine()
+
+
+    /**
      * Initialise.
      *
      * @return void
@@ -39,6 +73,19 @@ class Main
         self::$_file = ($_SERVER['argv'][1] ?? null);
         if (self::$_file === null || file_exists(self::$_file) === false) {
             throw new \Exception('No file passed in');
+        }//end if
+
+        // Start engines.
+        self::$_engine = 'iptables';
+        foreach (glob(__DIR__.'/Engines/*.inc') as $engineFile) {
+            $name  = basename($engineFile, '.inc');
+            $class = '\\Firewall\\Engines\\'.$name;
+
+            self::$_engines[strtolower($name)] = new $class();
+        }//end foreach
+
+        if (isset(self::$_engines[self::$_engine]) === false) {
+            throw new \Exception(sprintf('Missing firewall engine (%s)', self::$_engine));
         }//end if
 
     }//end init()
