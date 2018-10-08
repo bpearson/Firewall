@@ -16,6 +16,28 @@ class Action extends AbstractObject
     public $type = 'FIREWALL_ACTION';
 
 
+    /**
+     * Validate.
+     *
+     * @return void
+     * @throws \Exception When validation fails.
+     */
+    public function validate()
+    {
+        if (($this->parentNode->type ?? null) !== 'FIREWALL_ACTIONS_LIST') {
+            throw new \Exception('Action can only exist under Actions');
+        }//end if
+
+        parent::validate();
+
+    }//end validate()
+
+
+    /**
+     * Cast to string
+     *
+     * @return string
+     */
     public function __toString()
     {
         $content  = '# Action: '.$this->name."\n";

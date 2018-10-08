@@ -23,6 +23,7 @@ class Rule extends AbstractObject
      */
     public $value = 'input';
 
+
     /**
      * Validate.
      *
@@ -35,11 +36,20 @@ class Rule extends AbstractObject
             throw new \Exception('Rules can only exist under lines');
         }//end if
 
+        if (empty($this->value) === true) {
+            throw new \Exception('Rule value cannot be empty');
+        }//end if
+
         parent::validate();
 
     }//end validate()
 
 
+    /**
+     * Cast to string
+     *
+     * @return string
+     */
     public function __toString()
     {
         $content = '';
