@@ -45,10 +45,6 @@ class Limit extends AbstractObject
      */
     public function validate()
     {
-        if (($this->parentNode->type ?? null) !== 'FIREWALL_LINE') {
-            throw new \Exception('Limit can only exist under a line');
-        }//end if
-
         if (empty($this->value) === true) {
             throw new \Exception('Limit cannot have an empty value');
         }//end if

@@ -25,17 +25,37 @@ class State extends AbstractObject
     /**
      * Value of the object.
      *
-     * @var string
+     * @var array
      */
-    public $value = '';
+    public $value = [];
+
+
+    /**
+     * Validate.
+     *
+     * @return void
+     * @throws \Exception When validation fails.
+     */
+    public function validate()
+    {
+        if (empty($this->value) === true) {
+            throw new \Exception('State cannot have an empty value');
+        }//end if
+
+        foreach ($this->value as $value) {
+            if (in_array($value, ['invalid', 'established', 'new', 'related', 'untracked']) === false) {
+                throw new \Exception('Invalid state "'.$value.'"');
+            }//end if
+        }//end foreach
+
+        parent::validate();
+
+    }//end validate()
 
 
     public function __toString()
     {
-        $content = '';
-        if (empty($this->value) === false) {
-            $content = ' -m conntrack --ctstate '.$this->value;
-        }//end if
+        $content = ' -m conntrack --ctstate '.strtoupper(implode(',', $this->value));
 
         return $content;
 

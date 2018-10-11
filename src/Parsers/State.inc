@@ -21,8 +21,12 @@ class State extends AbstractParser
      */
     public static function parse(&$firewall, $parseValue)
     {
+        if (is_string($parseValue) === false) {
+            throw new \Exception('Invalid value passed to state');
+        }//end if
+
         $object               = new Objects\State($firewall);
-        $object->value        = $parseValue;
+        $object->value        = explode(',', strtolower($parseValue));
         $firewall->children[] = $object;
 
     }//end parse()
