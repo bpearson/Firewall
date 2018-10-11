@@ -23,19 +23,48 @@ class Limit extends AbstractObject
     public $option = true;
 
     /**
-     * Value of the table.
+     * Value of the limit.
      *
      * @var integer
      */
     public $value = 0;
 
+    /**
+     * Unit of the limit.
+     *
+     * @var string
+     */
+    public $unit = 'second';
+
+
+    /**
+     * Validate.
+     *
+     * @return void
+     * @throws \Exception When validation fails.
+     */
+    public function validate()
+    {
+        if (($this->parentNode->type ?? null) !== 'FIREWALL_LINE') {
+            throw new \Exception('Limit can only exist under a line');
+        }//end if
+
+        if (empty($this->value) === true) {
+            throw new \Exception('Limit cannot have an empty value');
+        }//end if
+
+        if (in_array($this->unit, ['second', 'minute', 'hour', 'day']) === false) {
+            throw new \Exception('Invalid unit set on limit');
+        }//end if
+
+        parent::validate();
+
+    }//end validate()
+
 
     public function __toString()
     {
-        $content = '';
-        if (empty($this->value) === false) {
-            $content = ' -m limit --limit '.$this->value.'/min';
-        }//end if
+        $content = ' -m limit --limit '.$this->value.'/'.$this->unit;
 
         return $content;
 

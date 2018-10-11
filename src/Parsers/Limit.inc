@@ -21,9 +21,15 @@ class Limit extends AbstractParser
      */
     public static function parse(&$firewall, $parseValue)
     {
-        $limit                = new Objects\Limit($firewall);
-        $limit->value         = (int) $parseValue;
-        $firewall->children[] = $limit;
+        if (is_array($parseValue) === false) {
+            // Shortcut single port.
+            $parseValue = ['rate' => $parseValue];
+        }//end if
+
+        $object               = new Objects\Limit($firewall);
+        $object->value        = (int) ($parseValue['rate'] ?? 0);
+        $object->unit         = strtolower(($parseValue['unit'] ?? 'second'));
+        $firewall->children[] = $object;
 
     }//end parse()
 
