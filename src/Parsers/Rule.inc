@@ -21,13 +21,20 @@ class Rule extends AbstractParser
      */
     public static function parse(&$firewall, $parseValue)
     {
-        if (is_array($parseValue) === false) {
+        if (isset($parseValue['chain']) === true) {
             $parseValue = [$parseValue];
+        } else if (is_array($parseValue) === false) {
+            $parseValue = ['chain' => $parseValue];
         }//end if
 
         foreach ($parseValue as $value) {
+            if (is_string($value) === true) {
+                $value = ['chain' => $value];
+            }//end if
+
             $object               = new Objects\Rule($firewall);
-            $object->value        = strtolower($value);
+            $object->value        = strtolower(($value['chain'] ?? $object->value));
+            $object->rule         = strtolower(($value['rule'] ?? $object->rule));
             $firewall->children[] = $object;
         }//end foreach
 

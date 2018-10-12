@@ -23,6 +23,13 @@ class Rule extends AbstractObject
      */
     public $value = 'input';
 
+    /**
+     * Type of rule.
+     *
+     * @var string
+     */
+    public $rule = 'append';
+
 
     /**
      * Validate.
@@ -38,6 +45,10 @@ class Rule extends AbstractObject
 
         if (empty($this->value) === true) {
             throw new \Exception('Rule value cannot be empty');
+        }//end if
+
+        if (in_array($this->rule, ['append', 'insert', 'delete']) === false) {
+            throw new \Exception(sprintf('Rule type cannot be %s', $this->rule));
         }//end if
 
         parent::validate();
@@ -56,7 +67,7 @@ class Rule extends AbstractObject
         $engine  = Main::getEngine();
         if ($engine !== null) {
             $options = $this->getOptions();
-            $content = $engine->rule($this->value, $options);
+            $content = $engine->rule($this->value, $this->rule, $options);
         }//end if
 
         return $content;

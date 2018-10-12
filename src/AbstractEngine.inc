@@ -36,12 +36,13 @@ abstract class AbstractEngine
     /**
      * Rule.
      *
-     * @param mixed $value   The value.
-     * @param array $options The options.
+     * @param mixed  $value   The value.
+     * @param string $type    The rule type.
+     * @param array  $options The options.
      *
      * @return string
      */
-    abstract public function rule($value, array $options=[]);
+    abstract public function rule($value, string $type, array $options=[]);
 
 
     /**

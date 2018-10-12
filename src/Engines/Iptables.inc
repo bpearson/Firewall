@@ -51,14 +51,30 @@ class Iptables extends AbstractEngine
     /**
      * Rule.
      *
-     * @param mixed $value   The value.
-     * @param array $options The options.
+     * @param mixed  $value   The value.
+     * @param string $type    The rule type.
+     * @param array  $options The options.
      *
      * @return string
      */
-    public function rule($value, array $options=[])
+    public function rule($value, string $type, array $options=[])
     {
-        $command = $this->command.' -A '.strtoupper($value).implode('', $options)."\n";
+        switch($type) {
+            case 'insert':
+                $ruleType = ' -I ';
+            break;
+
+            case 'delete':
+                $ruleType = ' -D ';
+            break;
+
+            case 'append':
+            default:
+                $ruleType = ' -A ';
+            break;
+        }//end switch
+
+        $command = $this->command.$ruleType.strtoupper($value).implode('', $options)."\n";
 
         return $command;
 
