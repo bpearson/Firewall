@@ -7,11 +7,39 @@ class Iptables extends AbstractEngine
 {
 
     /**
+     * Chains.
+     *
+     * @var array
+     */
+    public $chains = ['input', 'forward', 'output', 'prerouting', 'postrouting', 'notrack', 'secmark', 'connsecmark'];
+
+    /**
      * The command.
      *
      * @var string
      */
     public $command = '/sbin/iptables';
+
+    /**
+     * Protocols.
+     *
+     * @var array
+     */
+    public $protocols = ['tcp', 'udp', 'udplite', 'icmp', 'icmpv6', 'esp', 'ah', 'sctp', 'mh', 'all'];
+
+    /**
+     * Tables.
+     *
+     * @var array
+     */
+    public $tables = ['filter', 'nat', 'mangle', 'raw', 'security'];
+
+    /**
+     * Types.
+     *
+     * @var array
+     */
+    public $types = ['append', 'insert', 'delete'];
 
     /**
      * Clear.

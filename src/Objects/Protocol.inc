@@ -3,6 +3,7 @@ namespace Firewall\Objects;
 
 
 use \Firewall\AbstractObject;
+use \Firewall\Main;
 
 
 class Protocol extends AbstractObject
@@ -38,9 +39,10 @@ class Protocol extends AbstractObject
      */
     public function validate()
     {
+        $engine = Main::getEngine();
         if (empty($this->value) === true) {
             throw new \Exception('Protocol cannot have an empty value');
-        } else if (in_array($this->value, ['tcp', 'udp', 'icmp']) === false) {
+        } else if ($engine !== null && in_array($this->value, $engine->protocols) === false) {
             throw new \Exception(sprintf('Invalid protocol %s', $this->value));
         }//end if
 

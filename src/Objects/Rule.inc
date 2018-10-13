@@ -47,7 +47,8 @@ class Rule extends AbstractObject
             throw new \Exception('Rule value cannot be empty');
         }//end if
 
-        if (in_array($this->rule, ['append', 'insert', 'delete']) === false) {
+        $engine = Main::getEngine();
+        if ($engine !== null && in_array($this->rule, $engine->types) === false) {
             throw new \Exception(sprintf('Rule type cannot be %s', $this->rule));
         }//end if
 

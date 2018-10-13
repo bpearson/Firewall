@@ -3,6 +3,7 @@ namespace Firewall\Objects;
 
 
 use \Firewall\AbstractObject;
+use \Firewall\Main;
 
 
 class Table extends AbstractObject
@@ -42,7 +43,8 @@ class Table extends AbstractObject
             throw new \Exception('Table cannot have an empty value');
         }//end if
 
-        if (in_array($this->value, ['filter', 'nat', 'mangle']) === false) {
+        $engine = Main::getEngine();
+        if ($engine !== null && in_array($this->value, $engine->tables) === false) {
             throw new \Exception(sprintf('Invalid table %s', $this->value));
         }//end if
 

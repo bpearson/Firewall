@@ -6,11 +6,39 @@ abstract class AbstractEngine
 {
 
     /**
+     * Chains.
+     *
+     * @var array
+     */
+    public $chains = [];
+
+    /**
      * The command.
      *
      * @var string
      */
     public $command = null;
+
+    /**
+     * Protocols.
+     *
+     * @var array
+     */
+    public $protocols = [];
+
+    /**
+     * Tables.
+     *
+     * @var array
+     */
+    public $tables = [];
+
+    /**
+     * Types.
+     *
+     * @var array
+     */
+    public $types = [];
 
     /**
      * Clear.
