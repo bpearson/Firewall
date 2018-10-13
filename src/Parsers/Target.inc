@@ -21,9 +21,14 @@ class Target extends AbstractParser
      */
     public static function parse(&$firewall, $parseValue)
     {
-        $target               = new Objects\Target($firewall);
-        $target->value        = strtolower($parseValue);
-        $firewall->children[] = $target;
+        if (is_array($parseValue) === false) {
+            $parseValue = ['target' => $parseValue];
+        }//end if
+
+        $object               = new Objects\Target($firewall);
+        $object->value        = strtolower(($parseValue['target'] ?? ''));
+        $object->prefix       = ($parseValue['prefix'] ?? '');
+        $firewall->children[] = $object;
 
     }//end parse()
 

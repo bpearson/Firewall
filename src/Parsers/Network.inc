@@ -7,7 +7,7 @@ use \Firewall\Main;
 use \Firewall\Objects;
 
 
-class Table extends AbstractParser
+class Network extends AbstractParser
 {
 
 
@@ -21,8 +21,14 @@ class Table extends AbstractParser
      */
     public static function parse(&$firewall, $parseValue)
     {
-        $object               = new Objects\Table($firewall);
-        $object->value        = strtolower($parseValue);
+        if (is_array($parseValue) === false) {
+            $parseValue = ['device' => $parseValue];
+        }//end if
+
+        $object               = new Objects\Network($firewall);
+        $object->value        = ($parseValue['device'] ?? $object->value);
+        $object->in           = ($parseValue['in'] ?? $object->in);
+        $object->out          = ($parseValue['out'] ?? $object->out);
         $firewall->children[] = $object;
 
     }//end parse()

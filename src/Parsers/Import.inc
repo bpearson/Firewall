@@ -68,9 +68,10 @@ class Import extends AbstractParser
     {
         $file = false;
         if (file_exists($value) === true) {
-            // Too easy...
+            // Absolute path.
             $file = $value;
         } else if (file_exists(dirname($source).'/'.$value) === true) {
+            // Relative path.
             $file = dirname($source).'/'.$value;
         }//end if
 

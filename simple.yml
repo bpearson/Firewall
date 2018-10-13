@@ -8,10 +8,10 @@ lines:
      policy: "accept"
  - rule: "input"
    target: "accept"
-   interface-in: "lo"
+   network: {"device": "lo", "in": true}
  - rule: "output"
    target: "accept"
-   interface-out: "lo"
+   network: {"device": "lo", "out": true}
  - rule: "input"
    target: "accept"
    state: "ESTABLISHED,RELATED"

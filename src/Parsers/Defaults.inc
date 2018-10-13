@@ -24,8 +24,6 @@ class Defaults extends AbstractParser
     {
         if (is_array($parseValue) === false) {
             throw new \Exception('Invalid defaults value');
-        } else if (($firewall->type ?? null) !== 'FIREWALL_STATEMENT') {
-            throw new \Exception('Defaults can only exist at the top');
         }//end if
 
         $object               = new Objects\Defaults($firewall);
@@ -40,7 +38,6 @@ class Defaults extends AbstractParser
                 $fwEngine->command = $command;
             }//end if
         }//end foreach
-
 
     }//end parse()
 

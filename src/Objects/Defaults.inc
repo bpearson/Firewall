@@ -23,6 +23,22 @@ class Defaults extends AbstractObject
     public $value = [];
 
 
+    /**
+     * Validate.
+     *
+     * @return void
+     * @throws \Exception When validation fails.
+     */
+    public function validate()
+    {
+        if (($this->parentNode->type ?? null) !== 'FIREWALL_STATEMENT') {
+            throw new \Exception('Defaults can only exist at the top');
+        }//end if
+
+        parent::validate();
+
+    }//end validate()
+
     public function __toString()
     {
         $content = '';

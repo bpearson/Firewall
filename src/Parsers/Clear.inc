@@ -22,8 +22,8 @@ class Clear extends AbstractParser
     public static function parse(&$firewall, $parseValue)
     {
         // Nothing much here right now.
-        $clear = new Objects\Clear($firewall);
-        $firewall->children[] = $clear;
+        $object = new Objects\Clear($firewall);
+        $firewall->children[] = $object;
 
     }//end parse()
 

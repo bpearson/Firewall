@@ -5,7 +5,7 @@ namespace Firewall\Objects;
 use \Firewall\AbstractObject;
 
 
-class Table extends AbstractObject
+class Network extends AbstractObject
 {
 
     /**
@@ -13,7 +13,7 @@ class Table extends AbstractObject
      *
      * @var string
      */
-    public $type = 'FIREWALL_TABLE';
+    public $type = 'FIREWALL_NETWORK_INTERFACE';
 
     /**
      * Option.
@@ -27,7 +27,21 @@ class Table extends AbstractObject
      *
      * @var string
      */
-    public $value = 'filter';
+    public $value = '';
+
+    /**
+     * If true, use as input.
+     *
+     * @var boolean
+     */
+    public $in = false;
+
+    /**
+     * If true, use as output.
+     *
+     * @var boolean
+     */
+    public $out = false;
 
 
     /**
@@ -39,11 +53,7 @@ class Table extends AbstractObject
     public function validate()
     {
         if (empty($this->value) === true) {
-            throw new \Exception('Table cannot have an empty value');
-        }//end if
-
-        if (in_array($this->value, ['filter', 'nat', 'mangle']) === false) {
-            throw new \Exception(sprintf('Invalid table %s', $this->value));
+            throw new \Exception('Network cannot have an empty value');
         }//end if
 
         parent::validate();
@@ -54,8 +64,14 @@ class Table extends AbstractObject
     public function __toString()
     {
         $content = '';
-        if ($this->value !== 'filter') {
-            $content = ' -t '.$this->value;
+        if (empty($this->value) === false) {
+            if ($this->in === true) {
+                $content = ' -i '.$this->value;
+            }//end if
+
+            if ($this->out === true) {
+                $content = ' -o '.$this->value;
+            }//end if
         }//end if
 
         return $content;

@@ -29,10 +29,41 @@ class Target extends AbstractObject
      */
     public $value = 'drop';
 
+    /**
+     * Log prefix.
+     *
+     * @var string
+     */
+    public $prefix = '';
+
+
+    /**
+     * Validate.
+     *
+     * @return void
+     * @throws \Exception When validation fails.
+     */
+    public function validate()
+    {
+        if (empty($this->value) === true) {
+            throw new \Exception('Target cannot have an empty value');
+        }//end if
+
+        if ($this->value !== 'log' && empty($this->prefix) === false) {
+            throw new \Exception('Prefix can only used with LOG target');
+        }//end if
+
+        parent::validate();
+
+    }//end validate()
+
 
     public function __toString()
     {
         $content = ' -j '.strtoupper($this->value);
+        if ($this->value === 'log' && empty($this->prefix) === false) {
+            $content .= ' --log-prefix "'.$this->prefix.'"';
+        }//end if
 
         return $content;
 

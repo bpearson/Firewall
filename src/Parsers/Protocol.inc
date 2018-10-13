@@ -21,13 +21,8 @@ class Protocol extends AbstractParser
      */
     public static function parse(&$firewall, $parseValue)
     {
-        $parseValue = strtolower($parseValue);
-        if (in_array($parseValue, ['tcp', 'udp', 'icmp']) === false) {
-            throw new \Exception(sprintf('Invalid protocol %s', $parseValue));
-        }//end if
-
         $object               = new Objects\Protocol($firewall);
-        $object->value        = $parseValue;
+        $object->value        = strtolower($parseValue);
         $firewall->children[] = $object;
 
     }//end parse()

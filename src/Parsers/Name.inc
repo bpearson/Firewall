@@ -20,13 +20,14 @@ class Name extends AbstractParser
      */
     public static function parse(&$firewall, $parseValue)
     {
-        if (is_String($parseValue) === false) {
+        if (is_string($parseValue) === false) {
             throw new \Exception('Invalid name');
         }//end if
 
-        $name = new Objects\Name($firewall);
-        $name->setName($parseValue);
-        $firewall->children[] = $name;
+        $object = new Objects\Name($firewall);
+        $object->setName($parseValue);
+
+        $firewall->children[] = $object;
         if (in_array($firewall->type, ['FIREWALL_STATEMENT', 'FIREWALL_ACTION']) === true) {
             // Automatically populate up when needed.
             $firewall->setName($parseValue);
