@@ -17,11 +17,11 @@ class Rule extends AbstractObject
     public $type = 'FIREWALL_RULE';
 
     /**
-     * Value of the rule.
+     * Chain of the rule.
      *
      * @var string
      */
-    public $value = 'input';
+    public $chain = 'input';
 
     /**
      * Type of rule.
@@ -29,6 +29,28 @@ class Rule extends AbstractObject
      * @var string
      */
     public $rule = 'append';
+
+
+    /**
+     * Constructor.
+     *
+     * @param object $parent The parent node.
+     * @param mixed  $value  The object value(s).
+     *
+     * @return void
+     */
+    public function __construct($parent, $value)
+    {
+        parent::__construct($parent, $value);
+
+        if (is_string($value) === true) {
+            $value = ['chain' => $value];
+        }//end if
+
+        $this->chain = strtolower(($value['chain'] ?? $this->chain));
+        $this->rule  = strtolower(($value['rule'] ?? $this->rule));
+
+    }//end constructor
 
 
     /**
@@ -43,7 +65,7 @@ class Rule extends AbstractObject
             throw new \Exception('Rules can only exist under lines');
         }//end if
 
-        if (empty($this->value) === true) {
+        if (empty($this->chain) === true) {
             throw new \Exception('Rule value cannot be empty');
         }//end if
 
@@ -68,7 +90,7 @@ class Rule extends AbstractObject
         $engine  = Main::getEngine();
         if ($engine !== null) {
             $options = $this->getOptions();
-            $content = $engine->rule($this->value, $this->rule, $options);
+            $content = $engine->rule($this->chain, $this->rule, $options);
         }//end if
 
         return $content;

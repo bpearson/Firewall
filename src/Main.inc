@@ -34,7 +34,7 @@ class Main
      */
     public static function build()
     {
-        $firewall = Main::parse(self::$_file);
+        $firewall = Yaml::parseFile(self::$_file);
         Main::validate($firewall);
 
         echo (string) $firewall."\n";

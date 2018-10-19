@@ -17,11 +17,28 @@ class UserRule extends AbstractObject
     public $type = 'FIREWALL_USER_RULE';
 
     /**
-     * Value.
+     * New name.
      *
      * @var string
      */
-    public $value = null;
+    public $rule = null;
+
+
+    /**
+     * Constructor.
+     *
+     * @param object $parent The parent node.
+     * @param mixed  $value  The object value(s).
+     *
+     * @return void
+     */
+    public function __construct($parent, $value)
+    {
+        parent::__construct($parent, $value);
+
+        $this->rule = strtolower($value);
+
+    }//end constructor
 
 
     public function __toString()
@@ -30,7 +47,7 @@ class UserRule extends AbstractObject
         $engine  = Main::getEngine();
         if ($engine !== null) {
             $options = $this->getOptions();
-            $content = $engine->userRule($this->value, $options);
+            $content = $engine->userRule($this->rule, $options);
         }//end if
 
         return $content;

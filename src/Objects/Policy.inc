@@ -17,11 +17,11 @@ class Policy extends AbstractObject
     public $type = 'FIREWALL_DEFAULT_POLICY';
 
     /**
-     * Value.
+     * Chain.
      *
      * @var string
      */
-    public $value = '';
+    public $chain = '';
 
     /**
      * Policy.
@@ -31,6 +31,29 @@ class Policy extends AbstractObject
     public $policy = 'drop';
 
 
+    /**
+     * Constructor.
+     *
+     * @param object $parent The parent node.
+     * @param mixed  $value  The object value(s).
+     *
+     * @return void
+     */
+    public function __construct($parent, $value)
+    {
+        parent::__construct($parent, $value);
+
+        if (is_array($value) === false) {
+            // Short cut policy.
+            $value = ['chain' => $value];
+        }//end if
+
+        $this->chain  = strtolower(($value['chain'] ?? $this->chain));
+        $this->policy = strtolower(($value['policy'] ?? $this->policy));
+
+    }//end constructor
+
+
     public function __toString()
     {
         $content = '';
@@ -38,7 +61,7 @@ class Policy extends AbstractObject
         if ($engine !== null) {
             $options = $this->getOptions();
             $value   = [
-                'value'  => $this->value,
+                'value'  => $this->chain,
                 'policy' => $this->policy,
             ];
             $content = $engine->policy($value, $options);

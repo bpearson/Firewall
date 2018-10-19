@@ -3,6 +3,7 @@ namespace Firewall\Objects;
 
 
 use \Firewall\AbstractObject;
+use \Firewall\Main;
 
 
 class Defaults extends AbstractObject
@@ -20,7 +21,35 @@ class Defaults extends AbstractObject
      *
      * @var array
      */
-    public $value = [];
+    public $defaults = [];
+
+
+    /**
+     * Constructor.
+     *
+     * @param object $parent The parent node.
+     * @param mixed  $value  The object value(s).
+     *
+     * @return void
+     */
+    public function __construct($parent, $value)
+    {
+        parent::__construct($parent, $value);
+
+        if (is_array($value) === false) {
+            throw new \Exception('Invalid defaults value');
+        }//end if
+
+        // Set the defaults.
+        $commands = ($value['commands'] ?? []);
+        foreach ($commands as $engine => $command) {
+            $fwEngine = Main::getEngine($engine);
+            if ($fwEngine !== null) {
+                $fwEngine->command = $command;
+            }//end if
+        }//end foreach
+
+    }//end constructor
 
 
     /**

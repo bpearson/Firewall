@@ -23,11 +23,11 @@ class Address extends AbstractObject
     public $option = true;
 
     /**
-     * Value of the object.
+     * The address to target.
      *
      * @var string
      */
-    public $value = '';
+    public $address = '';
 
     /**
      * Direction of the address.
@@ -37,10 +37,33 @@ class Address extends AbstractObject
     public $direction = 'destination';
 
 
+    /**
+     * Constructor.
+     *
+     * @param object $parent The parent node.
+     * @param mixed  $value  The object value(s).
+     *
+     * @return void
+     */
+    public function __construct($parent, $value)
+    {
+        parent::__construct($parent, $value);
+
+        if (is_array($value) === false) {
+            // Shortcut single address.
+            $value = ['address' => $value];
+        }//end if
+
+        $this->direction = strtolower(($value['direction'] ?? $this->direction));
+        $this->address   = ($value['address'] ?? $this->address);
+
+    }//end constructor
+
+
     public function __toString()
     {
         $content = '';
-        if (empty($this->value) === false) {
+        if (empty($this->address) === false) {
             if ($this->hasOption('FIREWALL_PORT') === false && $this->hasOption('FIREWALL_PROTOCOL') === false) {
                 // Port and Protocol not defined, so dummy up a protocol and automatically add it.
                 $protocol = new Protocol(null);
@@ -48,9 +71,9 @@ class Address extends AbstractObject
             }//end if
 
             if ($this->direction === 'destination') {
-                $content .= ' -d '.$this->value;
+                $content .= ' -d '.$this->address;
             } else {
-                $content .= ' -s '.$this->value;
+                $content .= ' -s '.$this->address;
             }//end if
         }//end if
 

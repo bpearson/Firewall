@@ -23,11 +23,11 @@ class Target extends AbstractObject
     public $option = true;
 
     /**
-     * Value of the table.
+     * Target.
      *
      * @var string
      */
-    public $value = 'drop';
+    public $target = 'drop';
 
     /**
      * Log prefix.
@@ -38,6 +38,28 @@ class Target extends AbstractObject
 
 
     /**
+     * Constructor.
+     *
+     * @param object $parent The parent node.
+     * @param mixed  $value  The object value(s).
+     *
+     * @return void
+     */
+    public function __construct($parent, $value)
+    {
+        parent::__construct($parent, $value);
+
+        if (is_array($value) === false) {
+            $value = ['target' => $value];
+        }//end if
+
+        $this->target = strtolower(($value['target'] ?? $this->target));
+        $this->prefix = ($value['prefix'] ?? $this->prefix);
+
+    }//end constructor
+
+
+    /**
      * Validate.
      *
      * @return void
@@ -45,11 +67,11 @@ class Target extends AbstractObject
      */
     public function validate()
     {
-        if (empty($this->value) === true) {
+        if (empty($this->target) === true) {
             throw new \Exception('Target cannot have an empty value');
         }//end if
 
-        if ($this->value !== 'log' && empty($this->prefix) === false) {
+        if ($this->target !== 'log' && empty($this->prefix) === false) {
             throw new \Exception('Prefix can only used with LOG target');
         }//end if
 
@@ -60,8 +82,8 @@ class Target extends AbstractObject
 
     public function __toString()
     {
-        $content = ' -j '.strtoupper($this->value);
-        if ($this->value === 'log' && empty($this->prefix) === false) {
+        $content = ' -j '.strtoupper($this->target);
+        if ($this->target === 'log' && empty($this->prefix) === false) {
             $content .= ' --log-prefix "'.$this->prefix.'"';
         }//end if
 

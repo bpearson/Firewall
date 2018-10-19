@@ -23,11 +23,11 @@ class Network extends AbstractObject
     public $option = true;
 
     /**
-     * Value of the table.
+     * The network device target.
      *
      * @var string
      */
-    public $value = '';
+    public $device = '';
 
     /**
      * If true, use as input.
@@ -45,6 +45,29 @@ class Network extends AbstractObject
 
 
     /**
+     * Constructor.
+     *
+     * @param object $parent The parent node.
+     * @param mixed  $value  The object value(s).
+     *
+     * @return void
+     */
+    public function __construct($parent, $value)
+    {
+        parent::__construct($parent, $value);
+
+        if (is_array($value) === false) {
+            $value = ['device' => $value];
+        }//end if
+
+        $this->device = ($value['device'] ?? $this->device);
+        $this->in     = ($value['in'] ?? $this->in);
+        $this->out    = ($value['out'] ?? $this->out);
+
+    }//end constructor
+
+
+    /**
      * Validate.
      *
      * @return void
@@ -52,11 +75,11 @@ class Network extends AbstractObject
      */
     public function validate()
     {
-        if (empty($this->value) === true) {
+        parent::validate();
+
+        if (empty($this->device) === true) {
             throw new \Exception('Network cannot have an empty value');
         }//end if
-
-        parent::validate();
 
     }//end validate()
 
@@ -64,13 +87,13 @@ class Network extends AbstractObject
     public function __toString()
     {
         $content = '';
-        if (empty($this->value) === false) {
+        if (empty($this->device) === false) {
             if ($this->in === true) {
-                $content = ' -i '.$this->value;
+                $content = ' -i '.$this->device;
             }//end if
 
             if ($this->out === true) {
-                $content = ' -o '.$this->value;
+                $content = ' -o '.$this->device;
             }//end if
         }//end if
 

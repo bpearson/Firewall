@@ -23,18 +23,39 @@ class Comment extends AbstractObject
     public $option = true;
 
     /**
-     * Value of the object.
+     * The comment.
      *
      * @var string
      */
-    public $value = '';
+    public $comment = '';
+
+
+    /**
+     * Constructor.
+     *
+     * @param object $parent The parent node.
+     * @param mixed  $value  The object value(s).
+     *
+     * @return void
+     */
+    public function __construct($parent, $value)
+    {
+        parent::__construct($parent, $value);
+
+        if (is_string($value) === false) {
+            throw new \Exception('Invalid comment');
+        }//end if
+
+        $this->comment = $value;
+
+    }//end constructor
 
 
     public function __toString()
     {
         $content = '';
-        if (empty($this->value) === false) {
-            $content = ' -m comment --comment "'.$this->value.'"';
+        if (empty($this->comment) === false) {
+            $content = ' -m comment --comment "'.$this->comment.'"';
         }//end if
 
         return $content;

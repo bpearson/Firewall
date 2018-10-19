@@ -23,18 +23,40 @@ class Flag extends AbstractObject
     public $option = true;
 
     /**
-     * Value of the object.
+     * The flag mask.
      *
      * @var array
      */
-    public $value = [];
+    public $mask = [];
 
     /**
-     * Match of the object.
+     * The flag match.
      *
      * @var array
      */
     public $match = [];
+
+
+    /**
+     * Constructor.
+     *
+     * @param object $parent The parent node.
+     * @param mixed  $value  The object value(s).
+     *
+     * @return void
+     */
+    public function __construct($parent, $value)
+    {
+        parent::__construct($parent, $value);
+
+        if (is_array($value) === false) {
+            throw new \Exception('Invalid value passed to flag');
+        }//end if
+
+        $this->mask  = explode(',', strtolower(($value['mask'] ?? $this->mask)));
+        $this->match = explode(',', strtolower(($value['match'] ?? $this->match)));
+
+    }//end constructor
 
 
     /**
@@ -45,7 +67,7 @@ class Flag extends AbstractObject
      */
     public function validate()
     {
-        if (empty($this->value) === true) {
+        if (empty($this->mask) === true) {
             throw new \Exception('Flag cannot have an empty value');
         }//end if
 
@@ -53,7 +75,7 @@ class Flag extends AbstractObject
             throw new \Exception('Flag cannot have an empty match');
         }//end if
 
-        foreach ($this->value as $value) {
+        foreach ($this->mask as $value) {
             if (in_array($value, ['syn', 'ack', 'fin', 'rst', 'urg', 'psh', 'all', 'none']) === false) {
                 throw new \Exception('Invalid value in flag');
             }//end if
@@ -73,8 +95,8 @@ class Flag extends AbstractObject
     public function __toString()
     {
         $content = '';
-        if (empty($this->value) === false && empty($this->match) === false) {
-            $mask     = strtoupper(implode(',', $this->value));
+        if (empty($this->mask) === false && empty($this->match) === false) {
+            $mask     = strtoupper(implode(',', $this->mask));
             $match    = strtoupper(implode(',', $this->match));
             $content .= ' --tcp-flags '.$mask.' '.$match;
         }//end if

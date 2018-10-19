@@ -23,11 +23,32 @@ class State extends AbstractObject
     public $option = true;
 
     /**
-     * Value of the object.
+     * State.
      *
      * @var array
      */
-    public $value = [];
+    public $state = [];
+
+
+    /**
+     * Constructor.
+     *
+     * @param object $parent The parent node.
+     * @param mixed  $value  The object value(s).
+     *
+     * @return void
+     */
+    public function __construct($parent, $value)
+    {
+        parent::__construct($parent, $value);
+
+        if (is_array($value) === true) {
+            $value = implode(',', $value);
+        }//end if
+
+        $this->state = explode(',', strtolower($value));
+
+    }//end constructor
 
 
     /**
@@ -38,13 +59,13 @@ class State extends AbstractObject
      */
     public function validate()
     {
-        if (empty($this->value) === true) {
+        if (empty($this->state) === true) {
             throw new \Exception('State cannot have an empty value');
         }//end if
 
-        foreach ($this->value as $value) {
-            if (in_array($value, ['invalid', 'established', 'new', 'related', 'untracked']) === false) {
-                throw new \Exception('Invalid state "'.$value.'"');
+        foreach ($this->state as $state) {
+            if (in_array($state, ['invalid', 'established', 'new', 'related', 'untracked']) === false) {
+                throw new \Exception('Invalid state "'.$state.'"');
             }//end if
         }//end foreach
 
@@ -55,7 +76,7 @@ class State extends AbstractObject
 
     public function __toString()
     {
-        $content = ' -m conntrack --ctstate '.strtoupper(implode(',', $this->value));
+        $content = ' -m conntrack --ctstate '.strtoupper(implode(',', $this->state));
 
         return $content;
 

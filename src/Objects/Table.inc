@@ -24,11 +24,28 @@ class Table extends AbstractObject
     public $option = true;
 
     /**
-     * Value of the table.
+     * Table.
      *
      * @var string
      */
-    public $value = 'filter';
+    public $table = 'filter';
+
+
+    /**
+     * Constructor.
+     *
+     * @param object $parent The parent node.
+     * @param mixed  $value  The object value(s).
+     *
+     * @return void
+     */
+    public function __construct($parent, $value)
+    {
+        parent::__construct($parent, $value);
+
+        $this->table = strtolower($value);
+
+    }//end constructor
 
 
     /**
@@ -39,13 +56,13 @@ class Table extends AbstractObject
      */
     public function validate()
     {
-        if (empty($this->value) === true) {
+        if (empty($this->table) === true) {
             throw new \Exception('Table cannot have an empty value');
         }//end if
 
         $engine = Main::getEngine();
-        if ($engine !== null && in_array($this->value, $engine->tables) === false) {
-            throw new \Exception(sprintf('Invalid table %s', $this->value));
+        if ($engine !== null && in_array($this->table, $engine->tables) === false) {
+            throw new \Exception(sprintf('Invalid table %s', $this->table));
         }//end if
 
         parent::validate();
@@ -56,8 +73,8 @@ class Table extends AbstractObject
     public function __toString()
     {
         $content = '';
-        if ($this->value !== 'filter') {
-            $content = ' -t '.$this->value;
+        if ($this->table !== 'filter') {
+            $content = ' -t '.$this->table;
         }//end if
 
         return $content;

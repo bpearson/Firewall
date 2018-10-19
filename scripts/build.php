@@ -2,6 +2,8 @@
 
 $rootDir = dirname(__DIR__);
 
+ini_set('memory_limit', -1);
+
 require_once $rootDir.'/autoload.php';
 
 try {

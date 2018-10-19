@@ -27,7 +27,7 @@ class Limit extends AbstractObject
      *
      * @var integer
      */
-    public $value = 0;
+    public $limit = 0;
 
     /**
      * Unit of the limit.
@@ -38,6 +38,29 @@ class Limit extends AbstractObject
 
 
     /**
+     * Constructor.
+     *
+     * @param object $parent The parent node.
+     * @param mixed  $value  The object value(s).
+     *
+     * @return void
+     */
+    public function __construct($parent, $value)
+    {
+        parent::__construct($parent, $value);
+
+        if (is_array($value) === false) {
+            // Shortcut single port.
+            $value = ['limit' => $value];
+        }//end if
+
+        $this->limit = strtolower(($value['limit'] ?? $this->limit));
+        $this->unit  = strtolower(($value['unit'] ?? $this->unit));
+
+    }//end constructor
+
+
+    /**
      * Validate.
      *
      * @return void
@@ -45,7 +68,7 @@ class Limit extends AbstractObject
      */
     public function validate()
     {
-        if (empty($this->value) === true) {
+        if (empty($this->limit) === true) {
             throw new \Exception('Limit cannot have an empty value');
         }//end if
 
@@ -60,7 +83,7 @@ class Limit extends AbstractObject
 
     public function __toString()
     {
-        $content = ' -m limit --limit '.$this->value.'/'.$this->unit;
+        $content = ' -m limit --limit '.$this->limit.'/'.$this->unit;
 
         return $content;
 

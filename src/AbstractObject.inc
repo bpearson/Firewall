@@ -46,10 +46,11 @@ class AbstractObject
      * Constructor.
      *
      * @param object $parent The parent node.
+     * @param mixed  $value  The object value(s).
      *
      * @return void
      */
-    public function __construct($parent)
+    public function __construct($parent, $value)
     {
         $this->parentNode = $parent;
         if ($this->type === null) {

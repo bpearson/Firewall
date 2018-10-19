@@ -24,11 +24,28 @@ class Protocol extends AbstractObject
     public $option = true;
 
     /**
-     * Value of the object.
+     * Protocol.
      *
      * @var string
      */
-    public $value = 'tcp';
+    public $protocol = 'tcp';
+
+
+    /**
+     * Constructor.
+     *
+     * @param object $parent The parent node.
+     * @param mixed  $value  The object value(s).
+     *
+     * @return void
+     */
+    public function __construct($parent, $value)
+    {
+        parent::__construct($parent, $value);
+
+        $this->protocol = strtolower($value);
+
+    }//end constructor
 
 
     /**
@@ -40,10 +57,10 @@ class Protocol extends AbstractObject
     public function validate()
     {
         $engine = Main::getEngine();
-        if (empty($this->value) === true) {
+        if (empty($this->protocol) === true) {
             throw new \Exception('Protocol cannot have an empty value');
-        } else if ($engine !== null && in_array($this->value, $engine->protocols) === false) {
-            throw new \Exception(sprintf('Invalid protocol %s', $this->value));
+        } else if ($engine !== null && in_array($this->protocol, $engine->protocols) === false) {
+            throw new \Exception(sprintf('Invalid protocol %s', $this->protocol));
         }//end if
 
         parent::validate();
@@ -54,8 +71,8 @@ class Protocol extends AbstractObject
     public function __toString()
     {
         $content = '';
-        if (empty($this->value) === false) {
-            $content = ' -p '.$this->value;
+        if (empty($this->protocol) === false) {
+            $content = ' -p '.$this->protocol;
         }//end if
 
         return $content;
