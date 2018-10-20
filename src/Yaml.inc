@@ -65,38 +65,45 @@ class Yaml
             return;
         }//end if
 
-        $child = new $classObject($parent, $value);
-        if (in_array($key, ['action', 'actions', 'line', 'lines']) === true) {
-            if (is_array($value) === false) {
-                throw new \Exception('Invalid line element');
-            } else {
-                foreach ($value as $childKey => $childValue) {
-                    switch ($key) {
-                        case 'actions':
-                            $childKey = 'action';
-                        break;
+        if ($key === 'rule' && is_array($value) === true && isset($value[0]) === true) {
+            // Multiple children.
+            foreach ($value as $childValue) {
+                Yaml::parse($parent, 'rule', $childValue);
+            }//end foreach
+        } else {
+            $child = new $classObject($parent, $value);
+            if (in_array($key, ['action', 'actions', 'line', 'lines']) === true) {
+                if (is_array($value) === false) {
+                    throw new \Exception('Invalid line element: '.$value);
+                } else {
+                    foreach ($value as $childKey => $childValue) {
+                        switch ($key) {
+                            case 'actions':
+                                $childKey = 'action';
+                            break;
 
-                        case 'lines':
-                            $childKey = 'line';
-                        break;
+                            case 'lines':
+                                $childKey = 'line';
+                            break;
 
-                        case 'rule':
-                            if (is_integer($childKey) === true) {
-                                $childKey = 'rule';
-                            }//end if
-                        break;
+                            case 'rule':
+                                if (is_integer($childKey) === true) {
+                                    $childKey = 'rule';
+                                }//end if
+                            break;
 
-                        default:
-                            $childKey = $childKey;
-                        break;
-                    }//end switch
+                            default:
+                                $childKey = $childKey;
+                            break;
+                        }//end switch
 
-                    Yaml::parse($child, $childKey, $childValue);
-                }//end foreach
+                        Yaml::parse($child, $childKey, $childValue);
+                    }//end foreach
+                }//end if
             }//end if
-        }//end if
 
-        $parent->children[] = $child;
+            $parent->children[] = $child;
+        }//end if
 
     }//end parse()
 

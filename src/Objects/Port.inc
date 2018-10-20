@@ -51,10 +51,10 @@ class Port extends AbstractObject
 
         if (is_array($value) === false) {
             // Shortcut single address.
-            $value = ['port' => [(int) $value]];
+            $value = ['port' => [$value]];
         } else if (is_array($value) === true && isset($value[0]) === true) {
             $value = ['port' => $value];
-        } else if (isset($value['port']) === true && is_array($value['port']) === false) {
+        } else if (is_array($value) === true && isset($value['port']) === true && is_array($value['port']) === false) {
             $value['port'] = [$value['port']];
         }//end if
 

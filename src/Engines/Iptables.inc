@@ -151,12 +151,16 @@ class Iptables extends AbstractEngine
                             $optString .= ' -d '.$address;
 
                             // Make sure protocol is set.
-                            $required['protocol'] = true;
+                            if (isset($required['protocol']) === false || $required['protocol'] !== false) {
+                                $required['protocol'] = true;
+                            }//end if
                         } else {
                             $optString .= ' -s '.$address;
 
                             // Make sure protocol is set.
-                            $required['protocol'] = true;
+                            if (isset($required['protocol']) === false || $required['protocol'] !== false) {
+                                $required['protocol'] = true;
+                            }//end if
                         }//end if
                     }//end if
                 break;
@@ -175,6 +179,11 @@ class Iptables extends AbstractEngine
                         $mask       = strtoupper(implode(',', $mask));
                         $match      = strtoupper(implode(',', $match));
                         $optString .= ' --tcp-flags '.$mask.' '.$match;
+
+                        // Make sure protocol is set.
+                        if (isset($required['protocol']) === false || $required['protocol'] !== false) {
+                            $required['protocol'] = true;
+                        }//end if
                     }//end if
                 break;
 
@@ -193,16 +202,10 @@ class Iptables extends AbstractEngine
                     if (empty($device) === false) {
                         if ($in === true) {
                             $optString .= ' -i '.$device;
-
-                            // Make sure protocol is set.
-                            $required['protocol'] = true;
                         }//end if
 
                         if ($out === true) {
                             $optString .= ' -o '.$device;
-
-                            // Make sure protocol is set.
-                            $required['protocol'] = true;
                         }//end if
                     }//end if
                 break;
@@ -211,31 +214,29 @@ class Iptables extends AbstractEngine
                     $ports     = ($option['port'] ?? []);
                     $direction = ($option['direction'] ?? null);
                     if (empty($ports) === false) {
-                        foreach ($ports as $port) {
-                            if (empty($port) === true) {
-                                continue;
-                            }//end if
-
-                            if (strpos($port, ':') !== false || strpos($port, ',') !== false) {
-                                // Multiple ports.
-                                $optString .= ' -m multiport';
-                                if ($direction === 'destination') {
-                                    $optString .= ' --dports '.$port;
-                                } else {
-                                    $optString .= ' --sports '.$port;
-                                }//end if
+                        $multiple = false;
+                        $optPort  = '';
+                        $ports    = array_filter($ports);
+                        $ports    = implode(',', $ports);
+                        if (strpos($ports, ':') !== false || strpos($ports, ',') !== false) {
+                            $optString .= ' -m multiport ';
+                            if ($direction === 'destination') {
+                                $optString .= ' --dports '.$ports;
                             } else {
-                                // Single port.
-                                if ($direction === 'destination') {
-                                    $optString .= ' --dport '.$port;
-                                } else {
-                                    $optString .= ' --sport '.$port;
-                                }//end if
+                                $optString .= ' --sports '.$ports;
                             }//end if
+                        } else {
+                            if ($direction === 'destination') {
+                                $optString .= ' --dport '.$ports;
+                            } else {
+                                $optString .= ' --sport '.$ports;
+                            }//end if
+                        }//end if
 
-                            // Make sure protocol is set.
+                        // Make sure protocol is set.
+                        if (isset($required['protocol']) === false || $required['protocol'] !== false) {
                             $required['protocol'] = true;
-                        }//end foreach
+                        }//end if
                     }//end if
                 break;
 
@@ -245,7 +246,7 @@ class Iptables extends AbstractEngine
                         $optString = ' -p '.$protocol.$optString;
 
                         // Protocol set.
-                        unset($required['protocol']);
+                        $required['protocol'] = false;
                     }//end if
                 break;
 
@@ -265,8 +266,12 @@ class Iptables extends AbstractEngine
 
                 case 'target':
                     $target = ($option['target'] ?? null);
+                    $prefix = ($option['prefix'] ?? '');
                     if (empty($target) === false) {
                         $optString .= ' -j '.strtoupper($target);
+                        if ($target === 'log' && empty($prefix) === false) {
+                            $optString .= ' --log-prefix "'.str_replace('"', '\'', $prefix).'"';
+                        }//end if
                     }//end if
                 break;
 
@@ -279,12 +284,14 @@ class Iptables extends AbstractEngine
 
         // Check for some requirements.
         foreach ($required as $key => $require) {
-            switch ($key) {
-                case 'protocol':
-                    // Always prepend protocol.
-                    $optString = ' -p tcp'.$optString;
-                break;
-            }//end switch
+            if ($require === true) {
+                switch ($key) {
+                    case 'protocol':
+                        // Always prepend protocol.
+                        $optString = ' -p tcp'.$optString;
+                    break;
+                }//end switch
+            }//end if
         }//end foreach
 
         return $optString;
