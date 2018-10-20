@@ -76,7 +76,8 @@ class State extends AbstractObject
 
     public function __toString()
     {
-        $content = ' -m conntrack --ctstate '.strtoupper(implode(',', $this->state));
+        $content = '';
+        //$content = ' -m conntrack --ctstate '.strtoupper(implode(',', $this->state));
 
         return $content;
 

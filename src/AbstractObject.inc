@@ -2,6 +2,10 @@
 namespace Firewall;
 
 
+use \Firewall\Util;
+
+
+
 class AbstractObject
 {
 
@@ -60,6 +64,11 @@ class AbstractObject
     }//end constructor
 
 
+    /**
+     * Convert the tree to a string.
+     *
+     * @return string
+     */
     public function __toString()
     {
         $content  = '';
@@ -75,6 +84,33 @@ class AbstractObject
 
 
     /**
+     * Get the option settings for an object.
+     *
+     * @return array
+     */
+    public function getOption()
+    {
+        $option = [];
+        if ($this->option === true) {
+            $class = Util::stripNamespace(strtolower(get_called_class()));
+            $vars  = get_object_vars($this);
+
+            // Remove unwanted metadata.
+            unset($vars['type']);
+            unset($vars['parentNode']);
+            unset($vars['children']);
+            unset($vars['option']);
+            $vars = array_filter($vars);
+
+            $option[$class] = $vars;
+        }//end if
+
+        return $option;
+
+    }//end getOption()
+
+
+    /**
      * Get the options for a line.
      *
      * @return array
@@ -87,9 +123,9 @@ class AbstractObject
                 if ($child->option === true) {
                     if ($child->type === 'FIREWALL_PROTOCOL') {
                         // Hardcode protocol to be the first.
-                        array_unshift($options, (string) $child);
+                        $options = array_merge($child->getOption(), $options);
                     } else {
-                        $options[] = (string) $child;
+                        $options = array_merge($options, $child->getOption());
                     }//end if
                 }//end if
             }//end foreach

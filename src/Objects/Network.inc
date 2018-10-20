@@ -87,6 +87,7 @@ class Network extends AbstractObject
     public function __toString()
     {
         $content = '';
+        /**
         if (empty($this->device) === false) {
             if ($this->in === true) {
                 $content = ' -i '.$this->device;
@@ -96,6 +97,7 @@ class Network extends AbstractObject
                 $content = ' -o '.$this->device;
             }//end if
         }//end if
+        **/
 
         return $content;
 

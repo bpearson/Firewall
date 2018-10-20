@@ -83,7 +83,8 @@ class Limit extends AbstractObject
 
     public function __toString()
     {
-        $content = ' -m limit --limit '.$this->limit.'/'.$this->unit;
+        $content = '';
+        //$content = ' -m limit --limit '.$this->limit.'/'.$this->unit;
 
         return $content;
 

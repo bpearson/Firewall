@@ -71,9 +71,11 @@ class Protocol extends AbstractObject
     public function __toString()
     {
         $content = '';
+        /**
         if (empty($this->protocol) === false) {
             $content = ' -p '.$this->protocol;
         }//end if
+        **/
 
         return $content;
 

@@ -82,10 +82,13 @@ class Target extends AbstractObject
 
     public function __toString()
     {
+        $content = '';
+        /**
         $content = ' -j '.strtoupper($this->target);
         if ($this->target === 'log' && empty($this->prefix) === false) {
             $content .= ' --log-prefix "'.$this->prefix.'"';
         }//end if
+        **/
 
         return $content;
 

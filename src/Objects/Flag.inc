@@ -95,11 +95,13 @@ class Flag extends AbstractObject
     public function __toString()
     {
         $content = '';
+        /**
         if (empty($this->mask) === false && empty($this->match) === false) {
             $mask     = strtoupper(implode(',', $this->mask));
             $match    = strtoupper(implode(',', $this->match));
             $content .= ' --tcp-flags '.$mask.' '.$match;
         }//end if
+        **/
 
         return $content;
 

@@ -63,6 +63,7 @@ class Address extends AbstractObject
     public function __toString()
     {
         $content = '';
+        /**
         if (empty($this->address) === false) {
             if ($this->hasOption('FIREWALL_PORT') === false && $this->hasOption('FIREWALL_PROTOCOL') === false) {
                 // Port and Protocol not defined, so dummy up a protocol and automatically add it.
@@ -76,6 +77,7 @@ class Address extends AbstractObject
                 $content .= ' -s '.$this->address;
             }//end if
         }//end if
+        **/
 
         return $content;
 

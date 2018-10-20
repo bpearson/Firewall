@@ -20,4 +20,23 @@ class Util
     }//end camelCase()
 
 
+    /**
+     * Strip the namespace from a class.
+     *
+     * @param string $className The class name.
+     *
+     * @return string
+     */
+    public static function stripNamespace(string $className)
+    {
+        $lastPos = strrpos($className, '\\');
+        if ($lastPos !== false) {
+            $className = substr($className, ($lastPos + 1));
+        }//end if
+
+        return $className;
+
+    }//end stripNamespace()
+
+
 }//end class

@@ -54,9 +54,11 @@ class Comment extends AbstractObject
     public function __toString()
     {
         $content = '';
+        /**
         if (empty($this->comment) === false) {
             $content = ' -m comment --comment "'.$this->comment.'"';
         }//end if
+        **/
 
         return $content;
 

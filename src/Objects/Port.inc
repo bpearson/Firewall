@@ -67,6 +67,7 @@ class Port extends AbstractObject
     public function __toString()
     {
         $content = '';
+        /**
         if (empty($this->port) === false) {
             if ($this->hasOption('FIREWALL_PROTOCOL') === false) {
                 // Protocol not defined, so dummy up a protocol and automatically add it.
@@ -97,6 +98,7 @@ class Port extends AbstractObject
                 }//end if
             }//end foreach
         }//end if
+        **/
 
         return $content;
 

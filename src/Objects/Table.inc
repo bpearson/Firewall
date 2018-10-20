@@ -73,9 +73,11 @@ class Table extends AbstractObject
     public function __toString()
     {
         $content = '';
+        /**
         if ($this->table !== 'filter') {
             $content = ' -t '.$this->table;
         }//end if
+        **/
 
         return $content;
 

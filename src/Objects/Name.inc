@@ -33,6 +33,10 @@ class Name extends AbstractObject
         }//end if
 
         $this->name = $value;
+        if (in_array($this->parentNode->type, ['FIREWALL_STATEMENT', 'FIREWALL_ACTION']) === true) {
+            // Automatically populate up when needed.
+            $this->parentNode->setName($value);
+        }//end if
 
     }//end constructor
 
