@@ -15,7 +15,7 @@ class Util
      */
     public static function camelCase(string $value)
     {
-        return str_replace(' ', '', ucwords(str_replace('-', ' ', $value)));
+        return str_replace(' ', '', ucwords(str_replace('-', ' ', strtolower($value))));
 
     }//end camelCase()
 
