@@ -4,7 +4,6 @@ namespace Firewall\Tests;
 
 use \Firewall\BaseTest;
 use \Firewall\Main;
-use \Firewall\Util;
 
 
 class SimpleUnitTest extends BaseTest
