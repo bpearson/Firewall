@@ -7,7 +7,7 @@ use \Firewall\Main;
 use \Firewall\Objects;
 
 
-class ObjectUnitTest extends BaseTest
+class ObjectActionUnitTest extends BaseTest
 {
 
 
@@ -16,7 +16,7 @@ class ObjectUnitTest extends BaseTest
      *
      * @return void
      */
-    public function testObjectActionCast()
+    public function testCast()
     {
         $object = new Objects\Action(null, '');
         $this->assertSame("# Action: \n)\n;;\n", (string) $object);
@@ -27,7 +27,7 @@ class ObjectUnitTest extends BaseTest
 
         // TODO Do with a child or two.
 
-    }//end testObjectActionCast()
+    }//end testCast()
 
 
     /**
@@ -35,12 +35,12 @@ class ObjectUnitTest extends BaseTest
      *
      * @return void
      */
-    public function testObjectActionType()
+    public function testType()
     {
         $object = new Objects\Action(null, '');
         $this->assertSame('FIREWALL_ACTION', $object->type);
 
-    }//end testObjectActionType()
+    }//end testType()
 
 
     /**
@@ -48,7 +48,7 @@ class ObjectUnitTest extends BaseTest
      *
      * @return void
      */
-    public function testObjectActionValidate()
+    public function testValidate()
     {
         $parent = new Objects\Actions(null, '');
         $object = new Objects\Action($parent, '');
@@ -74,7 +74,7 @@ class ObjectUnitTest extends BaseTest
 
         $this->assertTrue($exception);
 
-    }//end testObjectActionValidate()
+    }//end testValidate()
 
 
 }//end class
