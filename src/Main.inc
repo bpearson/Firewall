@@ -43,6 +43,18 @@ class Main
 
 
     /**
+     * Return the base dir.
+     *
+     * @return string
+     */
+    public static function getBaseDir()
+    {
+        return dirname(__DIR__);
+
+    }//end getBaseDir()
+
+
+    /**
      * Return a firewall engine.
      *
      * @param mixed $engine Override the default engine.

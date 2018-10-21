@@ -2,11 +2,11 @@
 namespace Firewall\Tests;
 
 
-use \PHPUnit\Framework\TestCase;
+use \Firewall\BaseTest;
 use \Firewall\Util;
 
 
-class UtilUnitTest extends TestCase
+class UtilUnitTest extends BaseTest
 {
 
 
