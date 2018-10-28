@@ -104,50 +104,6 @@ class Main
 
 
     /**
-     * Parse the firewall yaml file.
-     *
-     * @param string $path The path to the YAML file.
-     *
-     * @return object
-     */
-    public static function parse(string $path)
-    {
-        $contents = yaml_parse_file($path);
-        $firewall = new \Firewall\Objects\Base($path);
-        if (is_array($contents) === true) {
-            foreach ($contents as $key => $value) {
-                Main::process($firewall, $key, $value);
-            }//end foreach
-        }//end if
-
-        return $firewall;
-
-    }//end parse()
-
-
-    /**
-     * Process a rule.
-     *
-     * @param object $firewall The current firewall object.
-     * @param string $name     The rule name.
-     * @param mixed  $value    The rule value.
-     *
-     * @return object
-     */
-    public static function process(&$firewall, string $name, $value)
-    {
-        $name  = Util::camelCase($name);
-        $class = '\\Firewall\\Parsers\\'.$name;
-        if (is_callable([$class, 'parse']) === false) {
-            throw new \Exception(sprintf('Invalid parser %s', $name));
-        }//end if
-
-        $class::parse($firewall, $value);
-
-    }//end process()
-
-
-    /**
      * Validate the firewall object.
      *
      * @param object $firewall The firewall object.
