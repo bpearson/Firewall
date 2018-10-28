@@ -4,6 +4,11 @@ $rootDir = __DIR__;
 
 include_once $rootDir.'/src/Main.inc';
 
+// Composer.
+if (file_exists(__DIR__.'/vendor/autoload.php') === true) {
+    include_once __DIR__.'/vendor/autoload.php';
+}//end if
+
 // Core code.
 foreach (glob($rootDir.'/src/*.inc') as $file) {
     $name = basename($file, '.inc');
