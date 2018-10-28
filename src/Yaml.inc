@@ -205,6 +205,8 @@ class Yaml
             throw new \Exception(sprintf('Invalid file %s', $file));
         }//end if
 
+        reset(self::$_current);
+        end(self::$_current);
         self::$_current[] = $file;
 
     }//end _set()
